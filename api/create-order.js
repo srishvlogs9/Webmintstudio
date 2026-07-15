@@ -20,7 +20,11 @@ module.exports = async (req, res) => {
     const SITE_URL = process.env.SITE_URL; // e.g. https://webmintstudio.in
 
     if (!APP_ID || !SECRET_KEY || !SITE_URL) {
-      return res.status(500).json({ error: 'Server not configured. Missing env vars.' });
+      const missing = [];
+      if (!APP_ID) missing.push('CASHFREE_APP_ID');
+      if (!SECRET_KEY) missing.push('CASHFREE_SECRET_KEY');
+      if (!SITE_URL) missing.push('SITE_URL');
+      return res.status(500).json({ error: 'Missing env var(s): ' + missing.join(', ') });
     }
 
     const base = ENV === 'sandbox'
